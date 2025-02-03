@@ -1,0 +1,19 @@
+Torneo{
+id =2,
+ nombre ='Torneo Mundial', 
+codRegion =B, 
+puntosVictoria =75.5combates{
+combate{
+id=2
+ idTorneo=2
+ fecha =2024-01-10 luchadores{
+luchador{
+nombre luchador=Misty Cascade
+ id luchador=3
+}luchador{
+nombre luchador=Serena Grace
+ id luchador=4
+}
+}
+}
+}

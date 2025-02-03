@@ -1,5 +1,6 @@
 package Principal;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,6 +16,12 @@ import Entidades.Combate;
 import Entidades.Entrenador;
 import Entidades.Torneo;
 import ControlFicheros.*;
+import com.mysql.cj.CacheAdapter;
+import org.w3c.dom.Document;
+
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import static ControlFicheros.escribirFicheros.exportarCarnetXML;
 import static ControlFicheros.leerCredenciales.*;
@@ -25,7 +32,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        menuInvitado();
+       menuInvitado();
+        //exportarDatosTorneo();
+       // menuEntrenador(2);
 
     }
 
@@ -68,7 +77,7 @@ public class Main {
      * menuAdminTorneo de momento no hace nada
      */
 
-    public static void menuAdminTorneo(){
+    public static void menuAdminTorneo(int id){
         System.out.println("Bienvenido al menu Administrador de Torneo");
         System.out.println("Pulse 0: salir\n" +
                 "Pulse 1: exportar datos");
@@ -77,15 +86,19 @@ public class Main {
             case 0:
                 System.out.println("Saliendo...");
                 menuInvitado();
+                break;
             case 1:
-                exportarTorneoXML();
-                System.out.println("Actualmente este menu esta en mantenimiento");
+                exportarDatosTorneo();
+                System.out.println("Exportando datos del torneo..");
+                menuAdminTorneo(id);
+                break;
+
         }
     }
 
 
 
-    public static void exportarTorneoXML(){
+    public static void exportarTorneo(){
 
     }
 
@@ -94,8 +107,12 @@ public class Main {
      * menuEntrenador puede ver datos carnet o exportar el carnet
      */
 
-    public void menuEntrenador(Entrenador e) {
-
+    public static void menuEntrenador(int id) {
+        EntrenadorDAOImplementacion entrenador = new EntrenadorDAOImplementacion();
+        Entrenador e = entrenador.buscarPorId(id);
+        CarnetDAOImplementacion carnet = new CarnetDAOImplementacion();
+        Carnet c = carnet.obtenerCarnetPorId(e.getId());
+        System.out.println(e.toString());
         while (true) {
             System.out.println("Eres el Entrenador las opciones son esas :" +
                     "\n 0- Volver al login" +
@@ -106,26 +123,27 @@ public class Main {
             int opcion = controlarExceptionInt();
 
 
-            if (opcion == 1) {
-                System.out.println(e.toString());
+            if (opcion == 0) {
+                menuInvitado();
                 break;
 
 
-            } else if (opcion == 2) {
-               exportarCarnetXML(e);
+            } else if (opcion == 1) {
+                System.out.println(c.toString());
+                menuEntrenador((int)e.getId());
                break;
 
 
-            } else if (opcion == 0) {
-                menuInvitado();
-                return;
-            } else {
-                System.out.println("Opcion no valida.Saliendo del programa...");
+            } else if (opcion == 2) {
+                exportarCarnetXML(e,c);
+                menuEntrenador((int)e.getId());
                 break;
-            }
+
+
 
         }
 
+    }
     }
 
 
@@ -160,11 +178,11 @@ public class Main {
 
 
 
-    public void exportarDatosTorneo() {
+    public static void exportarDatosTorneo() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese ID del torneo:");
         int idTorneo = sc.nextInt();
-        Torneo torneo = TorneoDAOImplementacion.obtenerTorneoPorId(idTorneo);
+        Torneo torneo = TorneoDAOImplementacion.buscarPorTorneoId(idTorneo);
 
         if (torneo == null) {
             System.out.println("Torneo no encontrado.");
@@ -172,13 +190,13 @@ public class Main {
         }
 
         // Generar reporte
-        StringBuilder reporte = new StringBuilder();
-        reporte.append("--- Datos del Torneo ---\n");
+        String sol = "";
+        /*reporte.append("--- Datos del Torneo ---\n");
         reporte.append("ID: ").append(torneo.getId()).append("\n");
         reporte.append("Nombre: ").append(torneo.getNombre()).append("\n");
         reporte.append("Región: ").append(torneo.getCodRegion()).append("\n");
-
-        // Verificar que la lista de combates no sea nula
+*/
+       /* // Verificar que la lista de combates no sea nula
         reporte.append("\n--- Combates ---\n");
         if (torneo.getCombates() != null && !torneo.getCombates().isEmpty()) {
             for (Combate combate : torneo.getCombates()) {
@@ -187,13 +205,13 @@ public class Main {
             }
         } else {
             reporte.append("No hay combates disponibles para este torneo.\n");
-        }
-
-        System.out.println(reporte.toString());
+        }*/
+        sol += torneo.exportarTorneo();
+        System.out.println(sol);
 
         // Opción para exportar a archivo
         try {
-            escribirFicheros.escribirXML(".txt", "reporte_torneo_" + idTorneo, "src/main/Files/", reporte.toString());
+            escribirFicheros.escribirXML(".txt", "reporte_torneo_" + idTorneo, "src/main/java/Files", sol);
         } catch (Exception e) {
             System.out.println("Error al intentar escribir el archivo: " + e.getMessage());
         }
@@ -221,12 +239,12 @@ public class Main {
             login=true;
 
         }else if(rol.equalsIgnoreCase("Entrenador")){
-            //menuEntrenador();
+            menuEntrenador(leerCredenciales.controlId(user,pass));
             System.out.println("Bienvenido al menu Entrenador");
             login=true;
 
         }else if(rol.equalsIgnoreCase("AdminTorneo")){
-            //menuAdminTorneo();
+            menuAdminTorneo(leerCredenciales.controlId(user,pass));
             System.out.println("Bienvenido al menu Administrador de Torneo");
             login=true;
 

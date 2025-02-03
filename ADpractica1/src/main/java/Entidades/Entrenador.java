@@ -5,19 +5,28 @@ public class Entrenador {
     private long id;
     private String nombre;
     private String nacionalidad;
-    private Carnet carnet;
+    //private Carnet carnet;
 
     public Entrenador(String nombre, String nacionalidad,Carnet carnet) {
         this.id = carnet.getIdEntrenador();
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
-        this.carnet=carnet;
+        //this.carnet=carnet;
     }
 
-public Entrenador(){
+    @Override
+    public String toString() {
+        return "Entrenador{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", nacionalidad='" + nacionalidad + '\''+
+                '}';
+    }
+
+    public Entrenador(){
 
 }
-
+/*
     public Carnet getCarnet() {
         return carnet;
     }
@@ -25,7 +34,7 @@ public Entrenador(){
     public void setCarnet(Carnet carnet) {
         this.carnet = carnet;
     }
-
+*/
     public long getId() {
         return id;
     }

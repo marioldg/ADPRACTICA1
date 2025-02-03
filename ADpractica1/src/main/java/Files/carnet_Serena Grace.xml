@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<carnet>
+  <id>4</id>
+  <fechaexp>2020-11-05</fechaexp>
+  <entrenador>
+    <nombre>Serena Grace</nombre>
+    <nacionalidad>Francia</nacionalidad>
+  </entrenador>
+  <puntos>150,00</puntos>
+</carnet>

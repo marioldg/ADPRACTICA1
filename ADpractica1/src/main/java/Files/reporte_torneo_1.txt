@@ -1,0 +1,19 @@
+Torneo{
+id =1,
+ nombre ='Liga Pokémon', 
+codRegion =A, 
+puntosVictoria =50.0combates{
+combate{
+id=1
+ idTorneo=1
+ fecha =2024-01-05 luchadores{
+luchador{
+nombre luchador=Ash Ketchum
+ id luchador=1
+}luchador{
+nombre luchador=Brock Slate
+ id luchador=2
+}
+}
+}
+}

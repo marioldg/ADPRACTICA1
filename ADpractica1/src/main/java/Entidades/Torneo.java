@@ -8,7 +8,7 @@ public class Torneo {
     private char codRegion;
     private float puntosVictoria = (int)(Math.random()*51)+50;
     private String nomAdmin;
-    private ArrayList<Entrenador> entrenadores = new ArrayList<>();
+   // private ArrayList<Entrenador> entrenadores = new ArrayList<>();
     private ArrayList<Combate> combates = new ArrayList<>();
 
     public Torneo(int id, String nombre, char codRegion, float puntosVictoria,String nomAdmin) {
@@ -69,32 +69,46 @@ public class Torneo {
         this.puntosVictoria = puntosVictoria;
     }
 
-    public void setEntrenadores(ArrayList<Entrenador> entrenadores) {
+   /* public void setEntrenadores(ArrayList<Entrenador> entrenadores) {
         this.entrenadores = entrenadores;
-    }
-
-    public void setCombates(ArrayList<Combate> combates) {
-        this.combates = combates;
     }
 
     public ArrayList<Entrenador> getEntrenadores() {
         return entrenadores;
+    }*/
+
+      public void setCombates(ArrayList<Combate> combates) {
+        this.combates = combates;
     }
+
 
     public ArrayList<Combate> getCombates() {
         return combates;
     }
 
-    @Override
-    public String toString() {
-        return "Torneo{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", codRegion=" + codRegion +
-                ", puntosVictoria=" + puntosVictoria +
-                ", nomAdmin='" + nomAdmin + '\'' +
-                ", entrenadores=" + entrenadores +
-                ", combates=" + combates +
-                '}';
+
+
+
+    public String exportarTorneo() {
+         String sol ="Torneo{\n" +
+                "id =" + id +
+                ",\n nombre ='" + nombre + '\'' +
+                ", \ncodRegion =" + codRegion +
+                ", \npuntosVictoria =" + puntosVictoria;
+
+        String combatesTotales = "\ncombates{\n";
+        for(Combate i : combates){
+
+            combatesTotales += "combate{\n";
+            combatesTotales += "id=" + i.getId();
+            combatesTotales += "\n idTorneo=" + i.getIdTorneo();
+            combatesTotales += "\n fecha =" + i.getFecha();
+            combatesTotales += i.participantes();
+            combatesTotales += "\n}";
+        }
+        combatesTotales += "\n}";
+        combatesTotales += "\n}";
+
+        return sol +combatesTotales;
     }
 }

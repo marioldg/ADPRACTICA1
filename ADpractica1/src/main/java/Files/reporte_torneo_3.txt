@@ -1,0 +1,21 @@
+Torneo{
+id =3,
+ nombre ='Copa Cascada', 
+codRegion =C, 
+puntosVictoria =60.0
+combates{
+combate{
+id=3
+ idTorneo=3
+ fecha =2024-01-15
+luchadores{
+luchador{
+nombre luchador=Ash Ketchum
+ id luchador=1
+}luchador{
+nombre luchador=Misty Cascade
+ id luchador=3
+}
+}
+}
+}

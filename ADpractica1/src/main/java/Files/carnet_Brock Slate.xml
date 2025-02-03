@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<carnet>
+  <id>2</id>
+  <fechaexp>2022-07-20</fechaexp>
+  <entrenador>
+    <nombre>Brock Slate</nombre>
+    <nacionalidad>Estados Unidos</nacionalidad>
+  </entrenador>
+  <puntos>98,00</puntos>
+</carnet>

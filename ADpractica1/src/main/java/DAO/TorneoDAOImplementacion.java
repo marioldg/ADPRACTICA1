@@ -13,7 +13,7 @@ import java.util.List;
 import static DAO.EntrenadorDAOImplementacion.buscarPorId;
 
 public class TorneoDAOImplementacion {
-
+    public static CombateDAOImplementacion combate = new CombateDAOImplementacion();
     private static TorneoDAOImplementacion instancia;
 
     private TorneoDAOImplementacion() {
@@ -28,7 +28,7 @@ public class TorneoDAOImplementacion {
 
     public List<Torneo> obtenerTodosLosTorneos() {
         List<Torneo> torneos = new ArrayList<>();
-        String sql = "SELECT id, nombre, cod_region, puntos_victoria, nom_admin FROM torneo";
+        String sql = "SELECT id, nombre, codRegion, puntosVictoria, idAdmin FROM torneo";
 
         try (Connection connection = Conexion.getConnection();
              Statement statement = connection.createStatement();
@@ -62,7 +62,7 @@ public class TorneoDAOImplementacion {
     }
 
     public static Torneo obtenerTorneoPorId(int id) {
-        String sql = "SELECT id, nombre, cod_region, puntos_victoria, nom_admin FROM torneo WHERE id = ?";
+        String sql = "SELECT id, nombre, codRegion, puntosVictoria, idAdmin FROM torneo WHERE id = ?";
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -97,36 +97,62 @@ public class TorneoDAOImplementacion {
     private static Torneo mapearResultSetATorneo(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String nombre = resultSet.getString("nombre");
-        char codRegion = resultSet.getString("cod_region").charAt(0);
-        float puntosVictoria = resultSet.getFloat("puntos_victoria");
-        String nomAdmin = resultSet.getString("nom_admin");
+        char codRegion = resultSet.getString("codRegion").charAt(0);
+        float puntosVictoria = resultSet.getFloat("puntosVictoria");
+        String nomAdmin = resultSet.getString("idAdmin");
 
         return new Torneo(id, nombre, codRegion, puntosVictoria, nomAdmin);
     }
 
-    public Torneo buscarPorTorneoId(int id){
+    public static Torneo buscarPorTorneoId(int id){
         Torneo torneo = new Torneo();
 
         String sql = "SELECT id,nombre,codRegion,puntosVictoria,idAdmin" +
-                "FROM torneo WHERE id = ?";
+                " FROM torneo WHERE id = ?";
+
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id); // Usamos setInt para id que es un int
+            statement.setInt(1, id);
+            System.out.println(statement.toString());// Usamos setInt para id que es un int
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     torneo.setId(resultSet.getInt("id"));
                     torneo.setNombre(resultSet.getString("nombre"));
                     torneo.setCodRegion(resultSet.getString("codRegion").charAt(0));
                     torneo.setPuntosVictoria(resultSet.getFloat("puntosVictoria"));
+                    torneo.setCombates(combate.combatesPorTorneo(torneo.getId()));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+
+
+
+
         return torneo;
 
     }
+    /*
+    String sql = "SELECT id, nombre, nacionalidad FROM entrenador WHERE id = ?";
+
+        try (Connection connection = Conexion.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id); // Usamos setInt para id que es un int
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Crear el objeto entrenador con los datos obtenidos
+                    entrenador = new Entrenador();
+                    entrenador.setId(resultSet.getInt("id"));
+                    entrenador.setNombre(resultSet.getString("nombre"));
+                    entrenador.setNacionalidad(resultSet.getString("nacionalidad"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+     */
 
     public Torneo añadirCombates(Torneo torneo) {
         String sql = "SELECT id, nombre, codRegion, puntosVictoria, idAdmin FROM combate WHERE idTorneo = ?";

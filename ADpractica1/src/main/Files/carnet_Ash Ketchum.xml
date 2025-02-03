@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<carnet>
+  <id>1</id>
+  <fechaexp>2023-01-15</fechaexp>
+  <entrenador>
+    <nombre>Ash Ketchum</nombre>
+    <nacionalidad>Japón</nacionalidad>
+  </entrenador>
+  <puntos>120,50</puntos>
+</carnet>

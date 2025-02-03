@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static DAO.EntrenadorDAOImplementacion.buscarPorId;
 
@@ -73,34 +75,37 @@ public class CombateDAOImplementacion {
         return new Combate(fecha, idTorneo);
     }
 
-    public Combate combatePorTorneo(int idTorneo) {
-        Combate combate = new Combate();
-        Entrenador entrenador1 = new Entrenador();
-        Entrenador entrenador2 = new Entrenador();
+    public ArrayList<Combate> combatesPorTorneo(int idTorneo) {
+        List<Combate> combates = new ArrayList<>(); // 🔹 Lista para almacenar los combates
 
-        String sql = "SELECT id,fecha,idEntrenador1,idEntrenador2,idTorneo" +
-                "FROM combate WHERE idTorneo = ?";
+        String sql = "SELECT id, fecha, idEntrenador1, idEntrenador2, idTorneo FROM combate WHERE idTorneo = ?";
 
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, idTorneo); // Usamos setInt para id que es un int
+
+            statement.setInt(1, idTorneo);
+
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
+                while (resultSet.next()) {  // 🔹 Iteramos sobre todos los resultados
+                    Combate combate = new Combate();
+                    combate.setId(resultSet.getInt("id"));  // Si tienes un setter para ID
                     combate.setIdTorneo(resultSet.getInt("idTorneo"));
-                    entrenador1 = buscarPorId(resultSet.getInt("idEntrenador1"));
-                    entrenador2 = buscarPorId(resultSet.getInt("idEntrenador2"));
+                    combate.setFecha(resultSet.getDate("fecha").toLocalDate()); // Convertimos SQL Date a LocalDate
+
+                    Entrenador entrenador1 = buscarPorId(resultSet.getInt("idEntrenador1"));
+                    Entrenador entrenador2 = buscarPorId(resultSet.getInt("idEntrenador2"));
+
                     combate.getLuchadores().add(entrenador1);
                     combate.getLuchadores().add(entrenador2);
-                    combate.setFecha(LocalDate.parse(resultSet.getString("fecha")));
 
+                    combates.add(combate); // 🔹 Añadir combate a la lista
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return combate;
-
+        return (ArrayList<Combate>) combates; // 🔹 Devuelve la lista de combates
     }
     public Combate combatePorId(int id) {
         Combate combate = new Combate();

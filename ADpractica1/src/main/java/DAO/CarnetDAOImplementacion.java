@@ -13,13 +13,13 @@ public class CarnetDAOImplementacion{
     private static CarnetDAOImplementacion instancia;
     //private static DataSource dataSource;
 
-    private CarnetDAOImplementacion(DataSource dataSource) {
+    public CarnetDAOImplementacion() {
         //this.dataSource=dataSource;
     }
 
-    public static CarnetDAOImplementacion getInstancia(DataSource dataSource) {
+    public static CarnetDAOImplementacion getInstancia() {
         if (instancia == null) {
-            instancia = new CarnetDAOImplementacion(dataSource);
+            instancia = new CarnetDAOImplementacion();
         }
         return instancia;
     }
@@ -49,7 +49,7 @@ public class CarnetDAOImplementacion{
     }
 
     public Carnet obtenerCarnetPorId(long id) {
-        String sql = "SELECT idEntrenador, fechExpedicion, puntos, numVictorias FROM carnets WHERE id_entrenador = ?";
+        String sql = "SELECT idEntrenador, fechaExpedicion, puntos, numVictorias FROM carnet WHERE idEntrenador = ?";
 
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -73,6 +73,8 @@ public class CarnetDAOImplementacion{
 
         return new Carnet(idEntrenador, ((java.sql.Date) fechaExpedicion).toLocalDate(), puntos, numVictorias);
     }
+
+
 
 
     @Override

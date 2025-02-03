@@ -96,6 +96,28 @@ public class leerCredenciales {
         return "nulo";
     }
 
+    public static int controlId (String username, String password) {
+        boolean validar = false;
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/files/Credenciales.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("  "); //divide la linea con comas
+                if (parts[0].equalsIgnoreCase(username) && parts[1].equals(password)) {
+                    //si las credenciales coinciden
+                    String rol = parts[3];
+                    System.out.println("Login exitoso. \nHola " + username);
+                    validar = true;
+                    return Integer.parseInt(rol) ;
+                }
+
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     /**
      * metodo para comprobar si ya existe un

@@ -16,13 +16,13 @@ public class EntrenadorDAOImplementacion {
     private static EntrenadorDAOImplementacion instancia;
     //private static DataSource dataSource;
 
-    private EntrenadorDAOImplementacion(DataSource dataSource) {
+    public EntrenadorDAOImplementacion() {
         //this.dataSource = dataSource;
     }
 
-    public static EntrenadorDAOImplementacion getInstancia(DataSource dataSource) {
+    public static EntrenadorDAOImplementacion getInstancia() {
         if (instancia == null) {
-            instancia = new EntrenadorDAOImplementacion(dataSource);
+            instancia = new EntrenadorDAOImplementacion();
         }
         return instancia;
     }

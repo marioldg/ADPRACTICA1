@@ -10,7 +10,7 @@ public class Combate {
     private LocalDate fecha;
     private long id;
     private int idTorneo;
-    private ArrayList<Entrenador> luchadores = new ArrayList<>();
+    private static ArrayList<Entrenador> luchadores = new ArrayList<>();
     private int idGanador = 0;
 
     public Combate(LocalDate fecha, int idTorneo) {
@@ -61,5 +61,17 @@ public class Combate {
 
     public int getIdGanador() {
         return idGanador;
+    }
+
+    public static String participantes(){
+        String sol = "\nluchadores{\n";
+        for(Entrenador x : luchadores){
+            sol += "luchador{\n";
+            sol+= "nombre luchador=" + x.getNombre();
+            sol += "\n id luchador=" + x.getId();
+            sol += "\n}";
+
+        }
+        return sol;
     }
 }
