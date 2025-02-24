@@ -1,4 +1,4 @@
-package org.example.controlUsuarios;
+package ControlUsuarios;
 
 public enum TipoUsuarios {
     Invitado, AdminGeneral, AdminTorneo, Entrenador;

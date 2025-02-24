@@ -15,22 +15,13 @@ import static DAO.EntrenadorDAOImplementacion.buscarPorId;
 
 public class CombateDAOImplementacion {
 
-    private static CombateDAOImplementacion instancia;
-    //private static DataSource dataSource;
-
     public CombateDAOImplementacion() {
-        //this.dataSource = dataSource;
+
     }
 
-    public static CombateDAOImplementacion getInstancia(DataSource dataSource) {
-        if (instancia == null) {
-            instancia = new CombateDAOImplementacion();
-        }
-        return instancia;
-    }
 
     public static void crearCombate(Combate combate) {
-        String sql = "INSERT INTO combates (fecha, idTorneo) VALUES (?, ?)";
+        String sql = "INSERT INTO combate (fecha, idTorneo) VALUES (?, ?)";
 
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -51,7 +42,7 @@ public class CombateDAOImplementacion {
 
 
     public Combate obtenerCombatePorId(long id) {
-        String sql = "SELECT fecha, id, idTorneo FROM combates WHERE id = ?";
+        String sql = "SELECT fecha, id, idTorneo FROM combate WHERE id = ?";
 
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

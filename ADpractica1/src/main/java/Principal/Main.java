@@ -98,9 +98,6 @@ public class Main {
 
 
 
-    public static void exportarTorneo(){
-
-    }
 
 
     /**
@@ -179,6 +176,7 @@ public class Main {
 
 
     public static void exportarDatosTorneo() {
+        TorneoDAOImplementacion.mostrarTorneos();
         Scanner sc = new Scanner(System.in);
         System.out.println("Ingrese ID del torneo:");
         int idTorneo = sc.nextInt();
@@ -191,21 +189,7 @@ public class Main {
 
         // Generar reporte
         String sol = "";
-        /*reporte.append("--- Datos del Torneo ---\n");
-        reporte.append("ID: ").append(torneo.getId()).append("\n");
-        reporte.append("Nombre: ").append(torneo.getNombre()).append("\n");
-        reporte.append("Región: ").append(torneo.getCodRegion()).append("\n");
-*/
-       /* // Verificar que la lista de combates no sea nula
-        reporte.append("\n--- Combates ---\n");
-        if (torneo.getCombates() != null && !torneo.getCombates().isEmpty()) {
-            for (Combate combate : torneo.getCombates()) {
-                reporte.append("Fecha: ").append(combate.getFecha())
-                        .append(" | Ganador: ").append(combate.getIdGanador()).append("\n");
-            }
-        } else {
-            reporte.append("No hay combates disponibles para este torneo.\n");
-        }*/
+
         sol += torneo.exportarTorneo();
         System.out.println(sol);
 
@@ -240,12 +224,10 @@ public class Main {
 
         }else if(rol.equalsIgnoreCase("Entrenador")){
             menuEntrenador(leerCredenciales.controlId(user,pass));
-            System.out.println("Bienvenido al menu Entrenador");
             login=true;
 
         }else if(rol.equalsIgnoreCase("AdminTorneo")){
             menuAdminTorneo(leerCredenciales.controlId(user,pass));
-            System.out.println("Bienvenido al menu Administrador de Torneo");
             login=true;
 
         }else{
@@ -349,8 +331,9 @@ public class Main {
 
 
         if (!(comprobarNuevo(nomAdminT))) {
-            escribirFicheros.insertarCredenciales(nomAdminT, passAdminT, "AdminTorneo", idAdminTorneo());
-            Torneo torneo = new Torneo(nombreTorneo,region,nomAdminT);
+            int idAdmin = idAdminTorneo();
+            escribirFicheros.insertarCredenciales(nomAdminT, passAdminT, "AdminTorneo", idAdmin);
+            Torneo torneo = new Torneo(nombreTorneo,region,idAdmin);
             System.out.println(torneo.toString());
             TorneoDAOImplementacion.crearTorneo(torneo);
             System.out.println("Administrador de torneo creado correctamente!!");

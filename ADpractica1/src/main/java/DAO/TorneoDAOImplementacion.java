@@ -14,19 +14,12 @@ import static DAO.EntrenadorDAOImplementacion.buscarPorId;
 
 public class TorneoDAOImplementacion {
     public static CombateDAOImplementacion combate = new CombateDAOImplementacion();
-    private static TorneoDAOImplementacion instancia;
 
     private TorneoDAOImplementacion() {
     }
 
-    public static TorneoDAOImplementacion getInstancia() {
-        if (instancia == null) {
-            instancia = new TorneoDAOImplementacion();
-        }
-        return instancia;
-    }
 
-    public List<Torneo> obtenerTodosLosTorneos() {
+    public static List<Torneo> obtenerTodosLosTorneos() {
         List<Torneo> torneos = new ArrayList<>();
         String sql = "SELECT id, nombre, codRegion, puntosVictoria, idAdmin FROM torneo";
 
@@ -44,14 +37,14 @@ public class TorneoDAOImplementacion {
     }
 
     public  static boolean crearTorneo(Torneo torneo) {
-        String sql = "INSERT INTO torneo (nombre, codRegion, puntosVictoria, nomAdmin) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO torneo (nombre, codRegion, puntosVictoria, idAdmin) VALUES (?, ?, ?, ?)";
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, torneo.getNombre());
             statement.setString(2, String.valueOf(torneo.getCodRegion()));
             statement.setFloat(3, torneo.getPuntosVictoria());
-            statement.setString(4, torneo.getNomAdmin());
+            statement.setString(4, String.valueOf(torneo.getIdAdmin()));
 
             return statement.executeUpdate() > 0;
 
@@ -113,7 +106,6 @@ public class TorneoDAOImplementacion {
         try (Connection connection = Conexion.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
-            System.out.println(statement.toString());// Usamos setInt para id que es un int
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     torneo.setId(resultSet.getInt("id"));
@@ -175,6 +167,14 @@ public class TorneoDAOImplementacion {
         }
 
         return torneo; // Retornamos el torneo con los combates añadidos
+    }
+
+    public static void mostrarTorneos(){
+        List<Torneo> a = obtenerTodosLosTorneos();
+       for(Torneo i : a){
+           System.out.println(i.toString());
+       }
+
     }
 
 

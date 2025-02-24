@@ -8,6 +8,7 @@ public class Torneo {
     private char codRegion;
     private float puntosVictoria = (int)(Math.random()*51)+50;
     private String nomAdmin;
+    private int idAdmin;
    // private ArrayList<Entrenador> entrenadores = new ArrayList<>();
     private ArrayList<Combate> combates = new ArrayList<>();
 
@@ -26,6 +27,12 @@ public class Torneo {
         this.nombre = nombre;
         this.codRegion = codRegion;
         this.nomAdmin = nomAdmin;
+    }
+
+    public Torneo(String nombre, char codRegion, int idAdmin) {
+        this.nombre = nombre;
+        this.codRegion = codRegion;
+        this.idAdmin = idAdmin;
     }
 
 
@@ -81,6 +88,13 @@ public class Torneo {
         this.combates = combates;
     }
 
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
+    }
 
     public ArrayList<Combate> getCombates() {
         return combates;
@@ -110,5 +124,17 @@ public class Torneo {
         combatesTotales += "\n}";
 
         return sol +combatesTotales;
+    }
+
+    @Override
+    public String toString() {
+        return "Torneo{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", codRegion=" + codRegion +
+                ", puntosVictoria=" + puntosVictoria +
+                ", nomAdmin='" + nomAdmin + '\'' +
+                ", combates=" + combates +
+                '}';
     }
 }

@@ -5,7 +5,7 @@ DROP DATABASE IF EXISTS AppDatabase;
 CREATE DATABASE AppDatabase;
 USE AppDatabase;
 
--- Tabla AdminTorneo (se usa en Torneo)
+-- Tabla AdminTorneo
 CREATE TABLE AdminTorneo (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
@@ -19,17 +19,16 @@ CREATE TABLE Entrenador (
     nacionalidad VARCHAR(255) NOT NULL
 );
 
--- Tabla Torneo (depende de AdminTorneo)
+-- Tabla Torneo (idAdmin ya no es clave foránea)
 CREATE TABLE Torneo (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(255) NOT NULL,
     codRegion CHAR(1) NOT NULL,
     puntosVictoria FLOAT NOT NULL,
-    idAdmin INT,
-    FOREIGN KEY (idAdmin) REFERENCES AdminTorneo(id)
+    idAdmin INT  -- Solo valor referencial, sin clave foránea
 );
 
--- Tabla intermedia EntrenadorTorneo (relación entre Entrenador y Torneo)
+-- Tabla intermedia EntrenadorTorneo
 CREATE TABLE EntrenadorTorneo (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idEntrenador BIGINT NOT NULL,
@@ -38,7 +37,7 @@ CREATE TABLE EntrenadorTorneo (
     FOREIGN KEY (idTorneo) REFERENCES Torneo(id)
 );
 
--- Tabla Carnet (modificada, ahora tiene un idEntrenador como columna normal, no como clave foránea)
+-- Tabla Carnet
 CREATE TABLE Carnet (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     idEntrenador BIGINT NOT NULL,
@@ -47,19 +46,17 @@ CREATE TABLE Carnet (
     numVictorias INT NOT NULL
 );
 
--- Tabla Combate (depende de Entrenador y Torneo)
+-- Tabla Combate (permite NULL en idEntrenador1, idEntrenador2 e idTorneo)
 CREATE TABLE Combate (
     id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     fecha DATE NOT NULL,
-    idEntrenador1 BIGINT NOT NULL,
-    idEntrenador2 BIGINT NOT NULL,
-    idTorneo INT NOT NULL,
-    FOREIGN KEY (idEntrenador1) REFERENCES Entrenador(id),
-    FOREIGN KEY (idEntrenador2) REFERENCES Entrenador(id),
-    FOREIGN KEY (idTorneo) REFERENCES Torneo(id)
+    idEntrenador1 BIGINT NULL,
+    idEntrenador2 BIGINT NULL,
+    idTorneo INT NULL
+
 );
 
--- Tabla Paises (id reducido a 1 carácter)
+-- Tabla Paises
 CREATE TABLE pais (
     id CHAR(4) NOT NULL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL
@@ -105,8 +102,8 @@ INSERT INTO Carnet (idEntrenador, fechaExpedicion, puntos, numVictorias) VALUES
 INSERT INTO Combate (fecha, idEntrenador1, idEntrenador2, idTorneo) VALUES
 ('2024-01-05', 1, 2, 1),
 ('2024-01-10', 3, 4, 2),
-('2024-01-15', 1, 3, 3),
-('2024-01-20', 2, 4, 4);
+('2024-01-15', NULL, 3, 3),
+('2024-01-20', 2, NULL, 4);
 
 -- Insertar datos en la tabla Paises
 INSERT INTO pais (id, nombre) VALUES

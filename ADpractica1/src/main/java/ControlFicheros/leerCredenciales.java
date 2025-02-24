@@ -119,28 +119,6 @@ public class leerCredenciales {
         return 0;
     }
 
-    /**
-     * metodo para comprobar si ya existe un
-     * @return
-     */
-
-    public static String nombreAdminTorneo() {
-        boolean validar = false;
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/files/Credenciales.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("  "); //divide la linea con comas
-                    String nomAdminT = parts[0];
-                    return nomAdminT;
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
 
     /**

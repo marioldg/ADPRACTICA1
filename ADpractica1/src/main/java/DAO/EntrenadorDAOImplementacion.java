@@ -2,30 +2,20 @@ package DAO;
 import Entidades.*;
 
 import DB.Conexion;
-import javax.sql.DataSource;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class EntrenadorDAOImplementacion {
 
 
-    private static EntrenadorDAOImplementacion instancia;
-    //private static DataSource dataSource;
-
     public EntrenadorDAOImplementacion() {
         //this.dataSource = dataSource;
     }
 
-    public static EntrenadorDAOImplementacion getInstancia() {
-        if (instancia == null) {
-            instancia = new EntrenadorDAOImplementacion();
-        }
-        return instancia;
-    }
 
 
 
@@ -74,7 +64,7 @@ public class EntrenadorDAOImplementacion {
         long idCarnet = resultSet.getLong("id_carnet");
 
         // Obtener el carnet correspondiente utilizando el método adecuado
-        Carnet carnet = obtenerCarnetPorId(idCarnet);
+        Carnet carnet = obtenerCarnetPorIdEntrenador(idCarnet);
 
         if (carnet == null) {
             throw new SQLException("No se encontró el carnet con ID: " + idCarnet);
@@ -90,7 +80,7 @@ public class EntrenadorDAOImplementacion {
      * @return
      */
 
-    public Carnet obtenerCarnetPorId(long id) {
+    public Carnet obtenerCarnetPorIdEntrenador(long id) {
         String sql = "SELECT idEntrenador, fechaExpedicion, puntos, numVictorias " +
                     "FROM carnets " +
                     "WHERE id_entrenador = ?";

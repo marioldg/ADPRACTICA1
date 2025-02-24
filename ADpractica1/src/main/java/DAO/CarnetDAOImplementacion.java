@@ -10,18 +10,7 @@ import java.util.Date;
 
 public class CarnetDAOImplementacion{
 
-    private static CarnetDAOImplementacion instancia;
-    //private static DataSource dataSource;
-
     public CarnetDAOImplementacion() {
-        //this.dataSource=dataSource;
-    }
-
-    public static CarnetDAOImplementacion getInstancia() {
-        if (instancia == null) {
-            instancia = new CarnetDAOImplementacion();
-        }
-        return instancia;
     }
 
 
